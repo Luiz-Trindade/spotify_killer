@@ -11,6 +11,7 @@ from rich.progress import (
     TextColumn,
     BarColumn,
     TaskProgressColumn,
+    TimeRemainingColumn,
 )
 from rich.table import Table
 from rich.columns import Columns
@@ -37,24 +38,28 @@ def show_banner():
         "🎵 Download media from anywhere 💿", style="italic #B3B3B3", justify="center"
     )
 
-    features = Columns(
-        [
-            Text("🎬 Videos", style="cyan"),
-            Text("🎵 Audio", style="magenta"),
-            Text("📋 Playlists", style="yellow"),
-        ],
-        align="center",
-        expand=True,
-    )
-
-    # Group combines multiple renderables
-    content = Group(header, tagline, Text(""), features)
+    # Adaptive content based on terminal width
+    width = console.width
+    if width >= 60:
+        features = Columns(
+            [
+                Text("🎬 Videos", style="cyan"),
+                Text("🎵 Audio", style="magenta"),
+                Text("📋 Playlists", style="yellow"),
+            ],
+            align="center",
+            expand=True,
+        )
+        content = Group(header, tagline, Text(""), features)
+    else:
+        # Compact version for small terminals
+        content = Group(header, tagline)
 
     panel = Panel(
         content,
         border_style="bold #1DB954",
         padding=(1, 4),
-        expand=False,
+        expand=True,  # Now expands to fill terminal width
     )
     console.print(panel)
 
@@ -111,10 +116,15 @@ def download_audio(url):
 
 
 def show_summary(media_type, total, output_dir):
-    table = Table(title="Download Summary", border_style="green")
-    table.add_column("Type", style="cyan", justify="center")
-    table.add_column("Quantity", style="yellow", justify="center")
-    table.add_column("Directory", style="magenta")
+    table = Table(
+        title="Download Summary",
+        border_style="green",
+        expand=True,  # Expands to terminal width
+        show_lines=True,
+    )
+    table.add_column("Type", style="cyan", justify="center", ratio=1)
+    table.add_column("Quantity", style="yellow", justify="center", ratio=1)
+    table.add_column("Directory", style="magenta", ratio=3, overflow="fold")
 
     table.add_row(media_type.upper(), str(total), output_dir)
     console.print(table)
@@ -151,9 +161,11 @@ def main():
     with Progress(
         SpinnerColumn(),
         TextColumn("[progress.description]{task.description}"),
-        BarColumn(),
+        BarColumn(bar_width=None),  # None = auto width
         TaskProgressColumn(),
+        TimeRemainingColumn(),
         console=console,
+        expand=True,
     ) as progress:
         task = progress.add_task(
             f"[cyan]Downloading {download_options}...",
