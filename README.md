@@ -7,7 +7,7 @@
 _A beautiful CLI tool to download videos and audio from YouTube and 1000+ sites_
 
 [![Python Version](https://img.shields.io/badge/python-3.10+-blue?logo=python&logoColor=white)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Powered by yt-dlp](https://img.shields.io/badge/powered%20by-yt--dlp-red?logo=youtube)](https://github.com/yt-dlp/yt-dlp)
 [![Rich CLI](https://img.shields.io/badge/CLI-Rich-0E83CD?logo=terminal)](https://github.com/Textualize/rich)
@@ -59,4 +59,5 @@ Powered by [Rich](https://github.com/Textualize/rich) with:
 ---
 
 ## 🖥️ Preview
+
 # spotify_killer
